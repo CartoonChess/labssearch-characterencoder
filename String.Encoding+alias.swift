@@ -3,7 +3,6 @@
 //  LabsSearch
 //
 //  Created by Xcode on ’19/07/29.
-//  Copyright © 2019 Distant Labs. All rights reserved.
 //
 
 import Foundation
@@ -13,8 +12,6 @@ extension CFStringEncodings {
     ///
     /// - Returns: `String.Encoding` object.
     func toStringEncoding() -> String.Encoding {
-        //        let rawEncoding = CFStringConvertEncodingToNSStringEncoding(CFStringEncoding(self.rawValue))
-        //        return String.Encoding(rawValue: rawEncoding)
         let rawEncoding = CFStringEncoding(self.rawValue)
         return rawEncoding.toStringEncoding()
     }
@@ -75,7 +72,7 @@ extension String.Encoding {
     static func alias(_ encoding: String) -> String.Encoding? {
         // Overwrite the encoding variable to make it a lowercase string
         var encoding = encoding.lowercased()
-        // Remove any hyphens or underscores etc. (technically allows characters like "é" but why would they be in charset?)
+        // Remove any hyphens or underscores etc. (technically allows characters like "é" but why would they be in charset name?)
         let allowedCharacters = CharacterSet.lowercaseLetters.union(.decimalDigits)
         encoding = encoding.components(separatedBy: allowedCharacters.inverted).joined()
         
