@@ -1,23 +1,11 @@
 //
 //  CharacterEncoder.swift
-//  Chears
+//  LabsSearch
 //
 //  Created by Xcode on ’19/06/19.
-//  Copyright © 2019 Distant Labs. All rights reserved.
 //
 
 import Foundation
-
-///// Essentially the same as `String.Encoding`, but with a human-readable `name` as well.
-//struct CharacterEncoding: CustomStringConvertible, Equatable, Codable {
-//    // A readable name. Mainly used for display
-//    let name: String
-//    // The raw value. Used for encoding
-////    let value: String.Encoding
-//    let value: UInt
-//
-//    var description: String { return name }
-//}
 
 /// Essentially the same as `String.Encoding`, but with a human-readable `name` as well.
 struct CharacterEncoding: CustomStringConvertible, Equatable, Codable {
@@ -27,17 +15,10 @@ struct CharacterEncoding: CustomStringConvertible, Equatable, Codable {
     private var rawValue: UInt
     
     // The actual encoding. This computed property allows the struct to be codable
-    // This keeps SearchEngine struct codable
     var value: String.Encoding {
         get { return String.Encoding(rawValue: rawValue) }
         set { rawValue = newValue.rawValue }
     }
-    
-    var description: String { return name }
-//    // For debugging
-//    var description: String {
-//        return "CharacterEncoding(name: \"\(name)\", value: \".\")"
-//    }
     
     // Necessary due to Codable
     init(name: String, value: String.Encoding) {
@@ -55,7 +36,6 @@ struct CharacterEncoder {
     // MARK: - Properties
     
     // If this value cannot be set during the init, the CharacterEncoder struct will be nil
-//    let encoding: String.Encoding
     let encoding: CharacterEncoding
     
     /// Forces the encoder to encode UTF-8 strings
@@ -83,25 +63,10 @@ struct CharacterEncoder {
         self.encoding = CharacterEncoding(name: name, value: encoding)
     }
     
-    // TODO: Are we going to use this?
-//    /// Initializes with HTML, represented as a string, that contains a character encoding attribute.
-//    ///
-//    /// - Parameter html: Properly formatted HTML string containing a valid character encoding attribute.
-//    ///
-//    /// If the HTML cannot be parsed or no matching encoding can be found, the `CharacterEncoder` will not be initialized and the property to which it is assigned will be `nil`.
-//    init?(html: String) {
-//        guard let encoding = CharacterEncoder.getCharacterEncoding(html: html) else { return nil }
-////        guard let encoding = String.Encoding.alias(htmlEncoding) else { return nil }
-////        self.encoding = encoding
-//        self.init(encoding: encoding)
-//    }
-    
     /// Initializes with a `String.Encoding`.
     ///
     /// - Parameter encoding: A `String.Encoding` or an alias for a `CFStringEncodings`.
     init(encoding: String.Encoding) {
-//        // With no encoding name provided, we'll show the int value for reference
-//        let name = String(encoding.rawValue)
         // Attempt to derive the encoding name, otherwise call it "unknown"
         let rawEncoding = CFStringConvertNSStringEncodingToEncoding(encoding.rawValue)
         let name = CFStringConvertEncodingToIANACharSetName(rawEncoding) as String? ?? "unknown"
@@ -113,8 +78,6 @@ struct CharacterEncoder {
     ///
     /// - Parameter encoding: A `CFStringEncodings` which will be converted to `String.Encoding`.
     init(encoding: CFStringEncodings) {
-//        let encoding = encoding.toStringEncoding()
-//        self.init(encoding: encoding)
         let stringEncoding = encoding.toStringEncoding()
         // Attempt to derive the encoding name, otherwise call it "unknown"
         let name = CFStringConvertEncodingToIANACharSetName(CFStringEncoding(stringEncoding.rawValue)) as String? ?? "unknown"
@@ -130,7 +93,7 @@ struct CharacterEncoder {
         let encoding = CFStringConvertIANACharSetNameToEncoding(name as CFString)
         // Unknown names will all produce the same InvalidId
         if encoding != kCFStringEncodingInvalidId {
-            print(.o, "Matched \(name) encoding to corresponding value \(encoding).")
+            //print("Matched \(name) encoding to corresponding value \(encoding).")
             return encoding.toStringEncoding()
         } else {
             // If CFString can't find the name, use our custom method
@@ -138,15 +101,6 @@ struct CharacterEncoder {
             return String.Encoding.alias(name)
         }
     }
-    
-    // TODO: Are we going to use this?
-//    private static func getCharacterEncoding(html: String) -> String? {
-//        // - Get HTML from SearchEngineEditor (future versions can use URLSession as backup)
-//        // - Parse HTML for <meta...charset> tag (may need to check for deprecated one as well)
-//        // - Pass HTML encoding to SearchEngineEditor (which will assign it to a SearchEngine object; AddEdit will read from there to update its view when developer features are enabled)
-//        let encoding = html
-//        return encoding
-//    }
     
     
     /// Encodes a string according to `CharacterEncoder`'s assigned `encoding`. Non-URL safe characters will be percent encoded.
@@ -164,21 +118,8 @@ struct CharacterEncoder {
         
         // Don't bother with any of this if the encoding is already UTF-8
         guard encoding.value != .utf8 else {
-            print(.n, "No character encoding required for UTF-8.")
             return string
         }
-        
-//        // Use UTF-8 if using the invalid encoding
-//        if encoding.value == .invalid {
-//            print(.i, "Using UTF-8 because encoding is set to invalid.")
-//            
-//        }
-        
-//        //Create a byte sequece representing the string using the new encoding
-//        guard let encodedData = string.data(using: encoding.value) else {
-//            print(.x, "Failed to encode characters using \"\(encoding)\". Falling back to UTF-8.")
-//            return string
-//        }
         
         //Create a byte sequece representing the string using the new encoding
         var encodedData = string.data(using: encoding.value)
@@ -186,13 +127,11 @@ struct CharacterEncoder {
         // We must continue to encode with UTF-8 so that URLComponents won't crash when looking for percent encoding
         if encodedData == nil {
             guard let utfData = string.data(using: .utf8) else {
-                print(.x, "Failed to encode characters using \"\(encoding)\" and UTF-8. Returning original string without percent encoding, but this may cause a fatal error.")
+                // Failed to encode characters using both detected encoding and UTF-8
+                // Returning original string without percent encoding, but this may cause a fatal error
                 return string
             }
             encodedData = utfData
-            print(.n, "Failed to encode characters using \"\(encoding)\". Falling back to UTF-8.")
-        } else {
-            print(.i, "Encoding using \(encoding).")
         }
         
         // Analyze string byte by byte, encode URL-unsafe characters, then reassemble
@@ -220,10 +159,7 @@ struct CharacterEncoder {
             }
             }.joined()
         
-        print(.o, "String \"\(string)\" encoded in \(encoding) to produce \"\(encodedString)\".")
-        
         return encodedString
-        
     }
     
 }
