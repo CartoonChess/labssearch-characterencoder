@@ -19,13 +19,20 @@ let task = URLSession.shared.dataTask(with: url) { _, response, _ in
 }
 task.resume()
 ```
-### Update encoding
+### Covert string to percent-encoded URL
 ```swift
-todo
+let urlString = url.absoluteString
+var encodedUrl: URL? = urlString.encodedUrl(characterEncoder: characterEncoder)
 ```
-### Encode URL
-```
-todo
+### Change encoding of percent-encoded URL
+```swift
+let newEncoder = CharacterEncoder(encoding: "euc-kr")
+CharacterEncoder.updateCharacterEncoding(newEncoder: newEncoder,
+                                         oldEncoder: characterEncoder,
+                                         url: encodedUrl!) { encoder, url in
+    self.characterEncoder = encoder
+    self.encodedUrl = url
+}
 ```
 
 ## Files
