@@ -3,7 +3,6 @@
 //  LabsSearch
 //
 //  Created by Xcode on ’19/06/23.
-//  Copyright © 2019 Distant Labs. All rights reserved.
 //
 
 import Foundation
