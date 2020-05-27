@@ -3,7 +3,6 @@
 //  LabsSearch
 //
 //  Created by Xcode on ’19/06/23.
-//  Copyright © 2019 Distant Labs. All rights reserved.
 //
 
 import Foundation
@@ -51,19 +50,11 @@ extension CharacterSet {
     ///
     /// - Tag: CharacterSet.urlSafeCharacters
     static var urlSafeCharacters: CharacterSet {
-//        return CharacterSet(intersectingCharactersIn: urlAllowedSets)
         var set = CharacterSet(intersectingCharactersIn: urlAllowedSets)
         // Remove ampersand, which is in all URL sets, apparently
-//        return set.intersection(CharacterSet(charactersIn: "&"))
         set.remove(charactersIn: "&")
         return set
     }
-    
-//    /// Characters valid not in the entire query of a URL, but in each individual query item (key and value).
-//    static var urlQueryItemAllowed: CharacterSet {
-//        // FIXME: Shouldn't we be using .remove() instead?
-//        return self.urlQueryAllowed.union(CharacterSet(charactersIn: "?&="))
-//    }
     
     /// Character set including colon, forward slash, and other undesirables.
     static var invalidFileNameCharacters: CharacterSet {
