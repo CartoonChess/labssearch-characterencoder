@@ -7,8 +7,6 @@
 
 import Foundation
 
-// TODO: This was originally the SearchEngineEditor class in LabsSearch. The original is working, but this extension is untested.
-
 extension CharacterEncoder {
     
     static func updateCharacterEncoding(newEncoder possibleEncoder: CharacterEncoder?,
