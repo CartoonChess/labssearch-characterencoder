@@ -34,6 +34,11 @@ CharacterEncoder.updateCharacterEncoding(newEncoder: newEncoder,
     self.encodedUrl = url
 }
 ```
+### Get query items
+```swift
+let components = URLComponents(url: encodedUrl!, resolvingAgainstBaseURL: true)
+let encodedQueryItems = components?.queryItems(encoder: characterEncoder, keepPercentEncoding: true)
+```
 
 ## Files
 Swift file | Description
@@ -44,6 +49,7 @@ CharacterSet+union | Convenience functions for mixing and matching `CharacterSet
 CharacterSet+urlAllowedSets | Various URL-safe `CharacterSet`s
 String+encodedUrl | String extension to convert URL as `String` into encoded `URL`
 String.Encoding+alias | Converts human-readable encoding names to Swift equivalents
+URLComponents+URLEncodedQueryItem | Convenience functions to handle encoded query items regardless of iOS version or `nil` values
 
 ## To do
 Currently only the encoding as set in the response header is retrieved. `XMLParser` could be used to check meta tags as well.
