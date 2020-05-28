@@ -39,6 +39,7 @@ CharacterEncoder.updateCharacterEncoding(newEncoder: newEncoder,
 Swift file | Description
 ---------- | -----------
 CharacterEncoder | Takes an encoding name and URL and returns the properly formatted URL
+CharacterEncoder+updateEncoding | Extension for safely re-encoding an already encoded URL with a different encoding
 CharacterSet+union | Convenience functions for mixing and matching `CharacterSet`s
 CharacterSet+urlAllowedSets | Various URL-safe `CharacterSet`s
 String+encodedUrl | String extension to convert URL as `String` into encoded `URL`
