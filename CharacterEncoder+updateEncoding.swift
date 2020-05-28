@@ -15,7 +15,7 @@ extension CharacterEncoder {
                                         oldEncoder: CharacterEncoder?,
                                         url: URL,
                                         allowNilEncoder: Bool = false,
-                                        completion: (encoder: CharacterEncoder?, url: URL) -> Void) {
+                                        completion: (_ encoder: CharacterEncoder?, _ url: URL) -> Void) {
         
         // Create mutable copy of encoder, in case using allowNilEncoder
         var temporaryEncoder = possibleEncoder
